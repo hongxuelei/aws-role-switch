@@ -19,6 +19,11 @@ test.each([
     true,
   ],
   ['https://us-east-1.console.amazonaws.cn/console/home', true],
+  // Additional test cases for China region
+  ['https://cn-north-1.console.amazonaws.cn/console/home', true],
+  ['https://cn-northwest-1.console.amazonaws.cn/console/ec2', true],
+  // Test case for China region without subdomain
+  ['https://console.amazonaws.cn/console/home', true],
 ])('test matchAwsConsoleUrl "%s"', (url, expected) => {
   expect(matchAwsConsoleUrl(url)).toEqual(expected);
 });

@@ -8,7 +8,14 @@ export const createSigninForm = (configItem: AWSConfigItem, csrf: string) => {
   const form = document.createElement('form');
   form.style.display = 'none';
   form.setAttribute('method', 'POST');
-  form.setAttribute('action', 'https://signin.aws.amazon.com/switchrole');
+  
+  // Determine the correct signin URL based on the current page
+  let actionUrl = 'https://signin.aws.amazon.com/switchrole';
+  if (redirect_uri.includes('.amazonaws.cn')) {
+    actionUrl = 'https://signin.amazonaws.cn/switchrole';
+  }
+  
+  form.setAttribute('action', actionUrl);
   for (const key in params) {
     const value = params[key as keyof SwitchRoleForm];
     if (value) {
@@ -19,4 +26,31 @@ export const createSigninForm = (configItem: AWSConfigItem, csrf: string) => {
     }
   }
   return form;
+};
+
+export default (params: Record<string, string>) => {
+  const form = document.createElement('form');
+  form.setAttribute('method', 'POST');
+  
+  // Determine the correct signin URL based on the current page
+  const currentUrl = window.location.href;
+  let actionUrl = 'https://signin.aws.amazon.com/switchrole';
+  if (currentUrl.includes('.amazonaws.cn')) {
+    actionUrl = 'https://signin.amazonaws.cn/switchrole';
+  }
+  
+  form.setAttribute('action', actionUrl);
+  form.setAttribute('target', '_top');
+  form.setAttribute('style', 'display: none;');
+
+  Object.entries(params).forEach(([key, value]) => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', key);
+    input.setAttribute('value', value);
+    form.appendChild(input);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
 };

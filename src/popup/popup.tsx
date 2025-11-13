@@ -44,6 +44,19 @@ const App = () => {
     });
   }, []);
 
+  // Create tab with appropriate AWS console URL
+  const onCreateTab = async () => {
+    const tab = await getCurrentTab();
+    let consoleUrl = 'https://console.aws.amazon.com/console';
+    
+    // Check if we're currently on a China region AWS console
+    if (tab.url && tab.url.includes('.amazonaws.cn')) {
+      consoleUrl = 'https://console.amazonaws.cn/console';
+    }
+    
+    createTab(consoleUrl, true, window.close);
+  };
+
   return (
     <div className={`bp5-${theme}`}>
       <Popup
@@ -54,13 +67,7 @@ const App = () => {
             <Button
               icon={<AWSIcon />}
               variant="minimal"
-              onClick={() =>
-                createTab(
-                  'https://console.aws.amazon.com/console',
-                  true,
-                  window.close,
-                )
-              }
+              onClick={onCreateTab}
             />
             <Button
               icon="wrench"

@@ -3,6 +3,7 @@ export default [
   'https://*.console.aws.amazon.com/*',
   'https://*.console.amazonaws-us-gov.com/*',
   'https://*.console.amazonaws.cn/*',
+  'https://console.amazonaws.cn/*',
 
   // lightsail
   'https://lightsail.aws.amazon.com/*',
